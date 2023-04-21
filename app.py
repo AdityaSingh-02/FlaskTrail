@@ -11,17 +11,27 @@ with open('svm_classifier.pkl', 'rb') as f:
 def home():
     return render_template('index.html')  # Render the HTML template with the input form
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict',methods=['POST'])
 def predict():
     # Get the input values from the form
-    pregnancies = float(request.form['pregnancies'])
-    glucose = float(request.form['glucose'])
-    blood_pressure = float(request.form['blood_pressure'])
-    skin_thickness = float(request.form['skin_thickness'])
-    insulin = float(request.form['insulin'])
-    bmi = float(request.form['bmi'])
-    diabetes_pedigree_function = float(request.form['diabetes_pedigree_function'])
-    age = float(request.form['age'])
+    # pregnancies = float(request.form['pregnancies'])
+    # glucose = float(request.form['glucose'])
+    # blood_pressure = float(request.form['blood_pressure'])
+    # skin_thickness = float(request.form['skin_thickness'])
+    # insulin = float(request.form['insulin'])
+    # bmi = float(request.form['bmi'])
+    # diabetes_pedigree_function = float(request.form['diabetes_pedigree_function'])
+    # age = float(request.form['age'])
+
+    # Getting values from URL
+    pregnancies = float(request.args.get('pregnancies'));
+    glucose = float(request.args.get('glucose'));
+    blood_pressure = float(request.args.get('blood_pressure'));
+    skin_thickness = float(request.args.get('skin_thickness'));
+    insulin = float(request.args.get('insulin'));
+    bmi = float(request.args.get('bmi'));
+    diabetes_pedigree_function = float(request.args.get('diabetes_pedigree_function'));
+    age = float(request.args.get('age'));
 
     # Create a numpy array with the input values
     input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree_function, age]])
@@ -36,6 +46,12 @@ def predict():
 
     # Render the HTML template with the prediction
     return render_template('result.html', prediction=prediction)
+
+@app.route('/User')
+def User():
+    username = request.args.get('Username')
+    print(username)
+    return render_template('result.html', prediction=username)
 
 if __name__ == '__main__':
     app.run(debug=True)
